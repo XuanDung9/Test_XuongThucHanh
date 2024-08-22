@@ -1,73 +1,122 @@
 ﻿@model Test_XuongThucHanh.Models.Staff
 
 @{
-    ViewData["Title"] = "Quản lý bộ môn / Chuyên ngành ";
+    ViewData["Title"] = "Quản lý bộ môn / Chuyên ngành";
 }
+
 <style>
     .container {
         margin-top: 20px;
-        display: flex;
-        flex-wrap: wrap;
     }
 
-    .form-control[readonly] {
-        background-color: #f5f5f5;
-        border: 1px solid #ced4da;
+    .info-box {
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-bottom: 20px;
     }
 
     .detail-row {
-        flex: 1; 
-        margin: 10px;
+        margin-bottom: 10px;
         display: flex;
-        flex-direction: column;
+        align-items: center; 
     }
 
     .detail-label {
         font-weight: bold;
-        margin-bottom: 5px; 
+        margin-right: 10px; 
+        white-space: nowrap; 
     }
 
     .detail-value {
+        flex: 1;
     }
+
+    hr {
+        border: 0;
+        border-top: 1px solid #ddd;
+        margin: 20px 0;
+    }
+
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .info-table th, .info-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .info-table th {
+            background-color: #f4f4f4;
+        }
+
 </style>
 
 <h3>@ViewData["Title"]</h3>
 
 <div class="container">
-    <div class="header">Thông tin nhân viên </div>
-    <div class="detail-row">
-        <span class="detail-label">
-            <h5> Mã  </h5>
-        </span>
-        <span class="detail-value">
-            @Html.TextBoxFor(model => model.Id)
-        </span>
-    </div>
 
-    <div class="detail-row">
-        <span class="detail-label">
-            <h5>Tên</h5>
-        </span>
-        <span class="detail-value">
-            @Html.TextBoxFor(model => model.Name)
-        </span>
-    </div>
+    <div class="info-box">
 
-    <div class="detail-row">
-        <span class="detail-label">
-            <h5> Email FE</h5>
-        </span>
-        <span class="detail-value">
-            @Html.TextBoxFor(model => model.AccountFe)
-        </span>
-    </div>
+        <div class="container">
+            <div class="header">Thông tin nhân viên</div>
+            <div class="detail-row">
+                <span class="detail-label">
+                    <h5>Mã : </h5>
+                </span>
+                <span class="detail-value">
+                    @ViewBag.Staff.StaffCode
+                </span>
+            </div>
 
-    <div class="detail-row">
-        <span class="detail-label">
-            <h5> Email FPT</h5>
-        </span>
-        <span class="detail-value">
-            @Html.TextBoxFor(model => model.AccountFpt)
-        </span>
+            <div class="detail-row">
+                <span class="detail-label">
+                    <h5>Tên : </h5>
+                </span>
+                <span class="detail-value">
+                    @ViewBag.Staff.Name
+                </span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">
+                    <h5>Email FE : </h5>
+                </span>
+                <span class="detail-value">
+                    @ViewBag.Staff.AccountFe
+                </span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">
+                    <h5>Email FPT : </h5>
+                </span>
+                <span class="detail-value">
+                    @ViewBag.Staff.AccountFpt
+                </span>
+            </div>
     </div>
+    <hr />
+    <h5> Danh sách bộ môn chuyên ngành theo cơ sở</h5>
+    <table class="info-table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Bộ môn</th>
+                <th>Cơ sở</th>
+                <th>Chuyên ngành</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>@ViewBag.Staff.DepartmentName</td>
+                <td>@ViewBag.Staff.FacilityName</td>
+                <td>@ViewBag.Staff.MajorName</td>
+            </tr>
+        </tbody>
+    </table>
+
 </div>

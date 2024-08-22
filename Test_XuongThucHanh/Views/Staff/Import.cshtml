@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Import Staff";
+}
+
+<h1>Import Staff</h1>
+
+<form asp-action="Import" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file">Chọn file Excel:</label>
+        <input type="file" id="file" name="file" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Import</button>
+</form>

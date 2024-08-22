@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using Test_XuongThucHanh.Models;
 
 namespace Test_XuongThucHanh
@@ -9,7 +10,8 @@ namespace Test_XuongThucHanh
         {
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
-            Console.WriteLine(configuration.GetConnectionString("DefaultConnection")); // Kiểm tra xem giá trị có khác null không
+            ExcelPackage.LicenseContext = LicenseContext.Commercial;
+            Console.WriteLine(configuration.GetConnectionString("DefaultConnection")); 
 
             builder.Services.AddDbContext<exam_distribution_testContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));

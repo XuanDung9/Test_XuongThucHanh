@@ -17,11 +17,11 @@ namespace Test_XuongThucHanh.Models
         public Guid Id { get; set; }
         [Required]
         [EmailAddress]
-        [RegularExpression(@"^[^\s@]+@fe\.edu\.vn$", ErrorMessage = "Email FE phải kế thúc bằng @fe.edu.vn")]
+        [RegularExpression(@"^[^\s@]+@fe\.edu\.vn$", ErrorMessage = "Không chứa khoảng trắng và Email FE phải kế thúc bằng @fe.edu.vn")]
         public string? AccountFe { get; set; }
         [Required]
         [EmailAddress]
-        [RegularExpression(@"^[^\s@]+@fpt\.edu\.vn$", ErrorMessage = "Email phải kết thúc bằng @fpt.edu.vn ")]
+        [RegularExpression(@"^[^\s@]+@fpt\.edu\.vn$", ErrorMessage = " Không chứa khoảng trắng và Email phải kết thúc bằng @fpt.edu.vn ")]
         public string? AccountFpt { get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "Tên không được quá 100 kí tự")]
