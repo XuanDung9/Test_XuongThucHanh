@@ -71,8 +71,9 @@ namespace Test_XuongThucHanh.Controllers
             }
 
             ViewBag.Staff = staff;
+            var model = _context.Staff.ToList();
 
-            return View();
+            return View(model);
         }
 
         // GET: MajorController/Create
@@ -90,6 +91,7 @@ namespace Test_XuongThucHanh.Controllers
             {
                 return View(staff);
             }
+
             if (_context.Staff.Any(s => s.StaffCode == staff.StaffCode))
             {
                 ModelState.AddModelError("StaffCode", "Mã nhân viên đã tồn tại.");
@@ -102,18 +104,28 @@ namespace Test_XuongThucHanh.Controllers
             {
                 ModelState.AddModelError("AccountFpt", "Email FPT đã tồn tại.");
             }
+
+            if (ModelState.IsValid == false)
+            {
+                return View(staff);
+            }
+
             try
             {
+
                 staff.Id = Guid.NewGuid();
                 staff.CreatedDate = DateTimeOffset.Now.ToUnixTimeSeconds();
                 staff.Status = 1;
+
                 _context.Staff.Add(staff);
                 _context.SaveChanges();
+
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("", "Có lỗi xảy ra khi lưu dữ liệu.");
+                return View(staff);
             }
         }
 
@@ -165,13 +177,8 @@ namespace Test_XuongThucHanh.Controllers
             }
         }
 
-        // GET: StaffController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: StaffController/Delete/5
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateStatus(Guid id, byte status)
@@ -264,13 +271,13 @@ namespace Test_XuongThucHanh.Controllers
                 return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
         }
-        // GET: Staff/Import
+
         public IActionResult Import()
         {
             return View();
         }
 
-        // POST: Staff/Import
+    
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Import(IFormFile file)
@@ -315,6 +322,80 @@ namespace Test_XuongThucHanh.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult CreateDepartmentMajor( Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("ID không hợp lệ.");
+            }
+            ViewBag.StaffId = id;
+
+            ViewBag.Facilities = _context.Facilities.ToList();
+            ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.Majors = _context.Majors.ToList();
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateDepartmentMajor(Guid staffId, Guid selectedFacility, Guid selectedDepartment, Guid selectedMajor)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Facilities = _context.Facilities.ToList();
+                ViewBag.Departments = new List<Department>();
+                ViewBag.Majors = new List<Major>();
+                return View();
+            }
+
+            var majorFacility = _context.MajorFacilities
+                .FirstOrDefault(mf => mf.IdDepartmentFacility == selectedDepartment && mf.IdMajor == selectedMajor);
+
+            if (majorFacility == null)
+            {
+                majorFacility = new MajorFacility
+                {
+                    Id = Guid.NewGuid(),
+                    IdDepartmentFacility = selectedDepartment,
+                    IdMajor = selectedMajor,
+                    CreatedDate = DateTimeOffset.Now.ToUnixTimeSeconds()
+                };
+
+                //_context.MajorFacilities.Add(majorFacility);
+                //await _context.SaveChangesAsync();
+            }
+
+            var staffMajorFacility = new StaffMajorFacility
+            {
+                Id = Guid.NewGuid(),
+                IdMajorFacility = majorFacility.Id,
+                IdStaff = staffId,
+                CreatedDate = DateTimeOffset.Now.ToUnixTimeSeconds()
+            };
+
+            //_context.StaffMajorFacilities.Add(staffMajorFacility);
+            //await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = staffId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Remove(Guid idStaff, Guid idMajor)
+        {
+            var staffMajorFacility = _context.StaffMajorFacilities
+                                             .FirstOrDefault(smf => smf.IdStaff == idStaff && smf.IdMajorFacility == idMajor);
+
+            if (staffMajorFacility == null)
+            {
+                return NotFound("Không tìm thấy bản ghi cần xóa.");
+            }
+            _context.StaffMajorFacilities.Remove(staffMajorFacility);
+            _context.SaveChanges();
+            return RedirectToAction("Details", new { id = idStaff });
         }
     }
 }

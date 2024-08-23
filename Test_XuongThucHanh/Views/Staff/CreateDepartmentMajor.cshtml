@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Thêm Bộ môn - Chuyên ngành";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="CreateDepartmentMajor" method="post">
+    <input type="hidden" name="StaffId" value="@ViewBag.StaffId" />
+    <div class="form-group">
+        <label for="facility">Cơ sở:</label>
+        <select id="facility" name="FacilityId" class="form-control">
+            @foreach (var facility in ViewBag.Facilities)
+            {
+                <option value="@facility.Id">@facility.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="department">Bộ môn:</label>
+        <select id="department" name="DepartmentId" class="form-control">
+            @foreach (var department in ViewBag.Departments)
+            {
+                <option value="@department.Id">@department.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="major">Chuyên ngành:</label>
+        <select id="major" name="MajorId" class="form-control">
+            @foreach (var major in ViewBag.Majors)
+            {
+                <option value="@major.Id">@major.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm Bộ Môn Chuyên Ngành</button>
+</form>

@@ -62,7 +62,7 @@
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Quản lý chuyên ngành", "Details", new { id = item.Id }) |
                     <form class="update-status-form" asp-action="UpdateStatus" asp-route-id="@item.Id" method="post" style="display:inline;">
                         <input type="hidden" name="status" value="@(item.Status == 1 ? 0 : 1)" />
                         <input type="hidden" name="__RequestVerificationToken" value="@Html.AntiForgeryToken().ToString()" />

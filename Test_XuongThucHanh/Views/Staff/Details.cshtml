@@ -1,4 +1,4 @@
-﻿@model Test_XuongThucHanh.Models.Staff
+﻿@model IEnumerable<Test_XuongThucHanh.Models.Staff>
 
 @{
     ViewData["Title"] = "Quản lý bộ môn / Chuyên ngành";
@@ -100,21 +100,38 @@
     </div>
     <hr />
     <h5> Danh sách bộ môn chuyên ngành theo cơ sở</h5>
+@*         <a asp-action="CreateDepartmentMajor" asp-route-id="@ViewBag.Staff.Id" class="btn btn-primary">Thêm Bộ Môn Chuyên Ngành</a> *@
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                @Html.ActionLink("Thêm ", "CreateDepartmentMajor", new { id = item.Id })
+            }
+        }
+        else
+        {
+            <p>Không có dữ liệu để hiển thị.</p>
+        }
+       @*  <a asp-action="CreateDepartmentMajor"  class="btn btn-primary">Thêm Bộ Môn Chuyên Ngành</a> *@
+    </div>
     <table class="info-table">
         <thead>
             <tr>
                 <th>STT</th>
-                <th>Bộ môn</th>
                 <th>Cơ sở</th>
+                <th>Bộ môn</th>
                 <th>Chuyên ngành</th>
+                <th>Hành động</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>1</td>
-                <td>@ViewBag.Staff.DepartmentName</td>
                 <td>@ViewBag.Staff.FacilityName</td>
+                <td>@ViewBag.Staff.DepartmentName</td>
                 <td>@ViewBag.Staff.MajorName</td>
+                <td>
+               </td>
             </tr>
         </tbody>
     </table>
